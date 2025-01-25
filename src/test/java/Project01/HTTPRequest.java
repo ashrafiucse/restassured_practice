@@ -1,6 +1,5 @@
 package Project01;
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 import org.testng.annotations.Test;
 import java.util.HashMap;
@@ -36,6 +35,16 @@ public class HTTPRequest {
 //                .log().all();
     }
 
+    //@Test(priority = 4, dependsOnMethods = {"createUser"})
+    void getUser() {
+        given()
+                .when()
+                .get("https://reqres.in/api/users/" + id)
+                .then()
+                .statusCode(200)
+                //.body("data.id", equalTo(3))
+                .log().all();
+    }
     @Test(priority = 3, dependsOnMethods = {"createUser"})
     void updateUser() {
         HashMap data = new HashMap();
@@ -52,10 +61,11 @@ public class HTTPRequest {
                 .then().statusCode(200)
                 .body("name", equalTo("Ashraf Ali"))
                 .body("job", equalTo("Automation Engineer"))
+                .header("Content-Type","application/json; charset=utf-8")
                 .log().all();
     }
 
-    @Test(priority = 4, dependsOnMethods = {"createUser"})
+    @Test(priority = 5, dependsOnMethods = {"createUser"})
     void deleteUser() {
         given()
                 .when()
